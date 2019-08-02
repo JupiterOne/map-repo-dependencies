@@ -1,0 +1,22 @@
+{
+  "name": "jupiter-repo-dependencies",
+  "description": "",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "scripts": {
+    "deps": "./tools/bin/run-create-relationships",
+    "deploy": "lifeomic-manual-deploy -p $npm_package_name -t lifeomic-test --action apply --skip-terraform"
+  },
+  "dependencies": {
+    "@jupiterone/jupiterone-client-nodejs": "^0.13.1",
+    "commander": "^2.20.0",
+    "esm": "^3.2.25",
+    "graphql": "^14.4.2",
+    "graphql-tag": "^2.10.1"
+  },
+  "devDependencies": {
+    "@lifeomic/dev-tools": "^4.10.0",
+    "@types/graphql": "^14.2.3",
+    "@types/node": "^12.6.8"
+  }
+}
