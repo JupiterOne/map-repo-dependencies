@@ -1,1 +1,8 @@
 node_modules
+yarn-error.log
+repos/*
+.env
+repos/jupiter-query-service
+repos/jupiter-rule-service
+repos/jupiter-query-service
+repos/jupiter-rule-service
