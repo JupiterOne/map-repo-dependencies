@@ -5,8 +5,7 @@ const gql = require('graphql-tag');
 
 require('dotenv').config();
 
-let success = 0,
-  failure = 0;
+let success = 0, failure = 0;
 const missingDeps = [];
 
 (async () => {
