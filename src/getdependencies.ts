@@ -9,7 +9,7 @@ export function getDependencies(repo: string) {
 
     dependencies = [];
     readJson = require(path).dependencies;
-    for (let j in readJson) {
+    for (const j in readJson) {
       if (j.includes('@jupiterone') || j.includes('@lifeomic')) {
         dependencies.push(j + ': ' + readJson[j]);
       }

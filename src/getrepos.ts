@@ -16,7 +16,7 @@ export async function getRepoIds() {
     dev: true,
   }).init();
 
-  for (let repo of repos) {
+  for (const repo of repos) {
     const repoID = await j1Client.queryV1(
       `Find CodeRepo with name='${repo}'`,
     );
