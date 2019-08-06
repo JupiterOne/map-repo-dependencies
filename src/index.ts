@@ -21,18 +21,18 @@ const missingDeps = [];
 
   const repoMap = await getRepoIds();
 
-  for (let repoName of Array.from(repoMap.values())) {
+  for (const repoName of Array.from(repoMap.values())) {
     console.log('Repo: ' + repoName);
 
     const mainRepo = await j1Client.queryV1(
       `FIND CodeRepo WITH name='${repoName}'`,
     );
     const depsList = getDependencies(repoName);
-    if (depsList === undefined) {
+    if (!depsList === undefined) {
       continue;
     }
     if (depsList.length > 0) {
-      for (let dep of depsList) {
+      for (const dep of depsList) {
         const fullName = dep.substring(1, dep.indexOf(':'));
 
         let depRepo = await j1Client.queryV1(
