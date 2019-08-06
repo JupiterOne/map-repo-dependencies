@@ -13,7 +13,8 @@
     "dotenv": "^8.0.0",
     "esm": "^3.2.25",
     "graphql": "^14.4.2",
-    "graphql-tag": "^2.10.1"
+    "graphql-tag": "^2.10.1",
+    "readline-sync": "^1.4.10"
   },
   "devDependencies": {
     "@lifeomic/dev-tools": "^4.10.0",

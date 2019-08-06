@@ -2,13 +2,23 @@ import { getDependencies } from './getDependencies';
 import { getRepoIds } from './getRepos';
 const JupiterOneClient = require('@jupiterone/jupiterone-client-nodejs');
 const gql = require('graphql-tag');
+const readlineSync = require('readline-sync');
 
 require('dotenv').config();
 
 let success = 0, failure = 0;
 const missingDeps = [];
+let packageScope = [];
 
 (async () => {
+  while (true) {
+    var scope = readlineSync.question('Please input a package scope, i.e. @package (input QUIT when finished): ');
+    if (scope === 'QUIT') {
+      break;
+    }
+    packageScope.push(scope);
+  }
+  console.log('');
   const j1Client = await new JupiterOneClient({
     account: 'j1dev',
     username: 'j1dev',
@@ -27,14 +37,14 @@ const missingDeps = [];
     const mainRepo = await j1Client.queryV1(
       `FIND CodeRepo WITH name='${repoName}'`,
     );
-    const depsList = getDependencies(repoName);
+    const depsList = getDependencies(repoName, packageScope);
     if (depsList === undefined) {
       continue;
     }
     if (depsList.length > 0) {
       for (const dep of depsList) {
         const fullName = dep.substring(1, dep.indexOf(':'));
-        
+
         let depRepo = await j1Client.queryV1(
           `FIND CodeRepo WITH full_name='${fullName}'`,
         );
@@ -62,7 +72,7 @@ const missingDeps = [];
         }
       }
     } else {
-      console.log('Repo has no @lifeomic or @jupiterone dependencies');
+      console.log('Repo has no dependencies of requested scopes');
     }
     console.log('');
   }
