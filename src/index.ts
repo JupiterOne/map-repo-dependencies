@@ -28,13 +28,13 @@ const missingDeps = [];
       `FIND CodeRepo WITH name='${repoName}'`,
     );
     const depsList = getDependencies(repoName);
-    if (!depsList === undefined) {
+    if (depsList === undefined) {
       continue;
     }
     if (depsList.length > 0) {
       for (const dep of depsList) {
         const fullName = dep.substring(1, dep.indexOf(':'));
-
+        
         let depRepo = await j1Client.queryV1(
           `FIND CodeRepo WITH full_name='${fullName}'`,
         );
@@ -53,7 +53,7 @@ const missingDeps = [];
         } else {
           console.log(
             'Failed to create relationship with ' + dep + 
-            ' (was not found on the graph). Skipped.',
+            ' (was not found on the graph). Skipped.'
           );
           failure++;
           if (missingDeps.indexOf(dep) === -1) {
