@@ -44,7 +44,6 @@ let packageScope = [];
     if (depsList.length > 0) {
       for (const dep of depsList) {
         const fullName = dep.substring(1, dep.indexOf(':'));
-
         let depRepo = await j1Client.queryV1(
           `FIND CodeRepo WITH full_name='${fullName}'`,
         );
