@@ -26,7 +26,7 @@ let packageScope = [];
     poolId: process.env.J1_USER_POOL_ID,
     clientId: process.env.J1_CLIENT_ID,
     accessToken: process.env.J1_API_TOKEN,
-    dev: true,
+    dev: process.env.J1_DEV || false
   }).init();
 
   const repoMap = await getRepoIds();
