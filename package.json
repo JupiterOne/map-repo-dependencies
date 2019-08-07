@@ -8,18 +8,21 @@
     "deploy": "lifeomic-manual-deploy -p $npm_package_name -t lifeomic-test --action apply --skip-terraform"
   },
   "dependencies": {
-    "@jupiterone/jupiterone-client-nodejs": "^0.13.1",
+    "@jupiterone/jupiterone-client-nodejs": "^0.13.2",
     "commander": "^2.20.0",
     "dotenv": "^8.0.0",
     "esm": "^3.2.25",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
+    "read-yaml": "^1.1.0",
     "readline-sync": "^1.4.10"
   },
   "devDependencies": {
     "@lifeomic/dev-tools": "^4.10.0",
     "@types/graphql": "^14.2.3",
-    "@types/node": "^12.6.8",
-    "prettier": "1.18.2"
+    "@types/node": "^12.7.0",
+    "prettier": "1.18.2",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
   }
 }

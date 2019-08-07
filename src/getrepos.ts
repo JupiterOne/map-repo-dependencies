@@ -1,31 +1,38 @@
+import { getClient } from "./getClient";
+import { error } from "console";
 const JupiterOneClient = require('@jupiterone/jupiterone-client-nodejs');
 const fs = require('fs');
 
-const reposPath = './repos';
-const repos = fs.readdirSync(reposPath);
 const repoMap = new Map();
 
-export async function getRepoIds() {
-  const j1Client = await new JupiterOneClient({
-    account: 'j1dev',
-    username: 'j1dev',
-    password: 'dev',
-    poolId: process.env.J1_USER_POOL_ID,
-    clientId: process.env.J1_CLIENT_ID,
-    accessToken: process.env.J1_API_TOKEN,
-    dev: true,
-  }).init();
+export async function getRepoIds(repoPath: string, accountInput, usernameInput, passwordInput) {
+  const repos = fs.readdirSync(repoPath);
+  const j1Client = await getClient(accountInput, usernameInput, passwordInput);
 
   for (const repo of repos) {
     const repoID = await j1Client.queryV1(
       `Find CodeRepo with name='${repo}'`,
     );
     if (repoID.length === 0) {
-      console.log('Could not query Repo (' + repo + ').');
+      let newRepoPath = repoPath.substring(repoPath.length) === '/' ? repoPath + repo : repoPath + '/' + repo;
+      let newRepos = fs.readdirSync(newRepoPath);
+      let subdir = false;
+      for (const nrepo of newRepos) {
+        const lol = await j1Client.queryV1(`Find CodeRepo with name='${nrepo}'`);
+        if (lol.length > 0) {
+          subdir = true;
+          break;
+        }
+      }
+      if (subdir) {
+        await getRepoIds(newRepoPath, accountInput, usernameInput, passwordInput);
+      }
+      else {
+        console.log('Could not query Repo (' + repo + ').');
+      }
     } else {
-      repoMap.set(repoID[0].entity._id, repo);
+      repoMap.set(repo, repoPath);
     }
   }
-  console.log('');
   return repoMap;
 }
