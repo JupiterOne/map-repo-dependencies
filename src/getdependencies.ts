@@ -33,6 +33,7 @@ export function getDependenciesYaml(repo: string, repoMap: Map<string,string>, p
     return dependencies;
   } catch (error) {
     console.log('*** Repo does not have a deploy directory with a dependencies.yaml ***');
+    console.log('');
   }
 }
 

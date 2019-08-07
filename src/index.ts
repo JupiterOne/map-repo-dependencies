@@ -25,10 +25,11 @@ let J1_ACCOUNT, J1_USERNAME, J1_PASSWORD;
   const usernameInput = readlineSync.question('Input username. If using a .env file, continue without input: ');
   const passwordInput = readlineSync.question('Input password. If using a .env file, continue without input: ');
 
+  console.log('');
   const j1Client = await getClient(accountInput, usernameInput, passwordInput);
   const repoMap = await getRepoIds(pathToRepos, accountInput, usernameInput, passwordInput);
-
   console.log('');
+  
   for (const repoName of Array.from(repoMap.keys())) {
     console.log('Repo: ' + repoName);
 
