@@ -4,7 +4,6 @@ const JupiterOneClient = require('@jupiterone/jupiterone-client-nodejs');
 let J1_ACCOUNT, J1_USERNAME, J1_PASSWORD, J1_API_TOKEN;
 
 export async function getClient(clientInput: string[]) {
-  console.log(clientInput);
   clientInput[0] === '' ?
     J1_ACCOUNT = process.env.J1_ACCOUNT :
     J1_ACCOUNT = clientInput[0];
