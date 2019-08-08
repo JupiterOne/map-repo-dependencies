@@ -1,13 +1,12 @@
 import { getClient } from "./getClient";
-import { error } from "console";
 const JupiterOneClient = require('@jupiterone/jupiterone-client-nodejs');
 const fs = require('fs');
 
 const repoMap = new Map();
 
-export async function getRepoIds(repoPath: string, accountInput, usernameInput, passwordInput) {
+export async function getRepoIds(repoPath: string, clientInput: string[]) {
   const repos = fs.readdirSync(repoPath);
-  const j1Client = await getClient(accountInput, usernameInput, passwordInput);
+  const j1Client = await getClient(clientInput);
 
   for (const repo of repos) {
     const repoID = await j1Client.queryV1(
@@ -25,7 +24,7 @@ export async function getRepoIds(repoPath: string, accountInput, usernameInput, 
         }
       }
       if (subdir) {
-        await getRepoIds(newRepoPath, accountInput, usernameInput, passwordInput);
+        await getRepoIds(newRepoPath, clientInput);
       }
       else {
         console.log('Could not query Repo (' + repo + ').');

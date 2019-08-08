@@ -4,15 +4,20 @@ const readYaml =  require('read-yaml');
 let readJson, parseYaml;
 let dependencies = [];
 
-export function getDependencies(repo: string, packageScope: string[], repoMap: Map<string,string>, pathToRepos: string) {
+export function getDependencies(repo: string, packageScope: string[], repoMap: Map<string,string>) {
   try {
     let path = '../' + repoMap.get(repo) + '/' + repo + '/package.json';
     dependencies = [];
     readJson = require(path).dependencies;
     for (const j in readJson) {
-      for (const scope of packageScope) {
-        if (j.includes(scope)) {
-          dependencies.push(j + ': ' + readJson[j]);
+      if (packageScope.length === 0) {
+        dependencies.push(j + ': ' + readJson[j]);
+      }
+      else {
+        for (const scope of packageScope) {
+          if (j.includes(scope)) {
+            dependencies.push(j + ': ' + readJson[j]);
+          }
         }
       }
     }
@@ -22,7 +27,7 @@ export function getDependencies(repo: string, packageScope: string[], repoMap: M
   }
 }
 
-export function getDependenciesYaml(repo: string, repoMap: Map<string,string>, pathToRepos: string) {
+export function getDependenciesYaml(repo: string, repoMap: Map<string,string>) {
   try {
     let path = repoMap.get(repo) + '/' + repo + '/deploy/dependencies.yaml';
     dependencies = [];

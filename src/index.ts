@@ -20,24 +20,27 @@ let J1_ACCOUNT, J1_USERNAME, J1_PASSWORD;
     }
     packageScope.push(scope);
   }
+  const clientInput = [];
   const pathToRepos = readlineSync.question('Input path to directory with repos (relative to root directory): ');
-  const accountInput = readlineSync.question('Input account. If using a .env file, continue without input: ');
-  const usernameInput = readlineSync.question('Input username. If using a .env file, continue without input: ');
-  const passwordInput = readlineSync.question('Input password. If using a .env file, continue without input: ');
+  clientInput.push(readlineSync.question('Input account. If using a .env file, continue without input: '));
+  clientInput.push(readlineSync.question('Input username. If using a .env file, continue without input: '));
+  clientInput.push(readlineSync.question('Input password. If using a .env file, continue without input: '));
+  clientInput.push(readlineSync.question('Input access token. If using a .env file, continue without input: '));
+
 
   console.log('');
-  const j1Client = await getClient(accountInput, usernameInput, passwordInput);
-  const repoMap = await getRepoIds(pathToRepos, accountInput, usernameInput, passwordInput);
+  const j1Client = await getClient(clientInput);
+  const repoMap = await getRepoIds(pathToRepos, clientInput);
   console.log('');
-  
+
   for (const repoName of Array.from(repoMap.keys())) {
     console.log('Repo: ' + repoName);
 
     const mainRepo = await j1Client.queryV1(
       `FIND CodeRepo WITH name='${repoName}'`,
     );
-    const depsList = getDependencies(repoName, packageScope, repoMap, pathToRepos);
-    const deployDepsList = getDependenciesYaml(repoName, repoMap, pathToRepos);
+    const depsList = getDependencies(repoName, packageScope, repoMap);
+    const deployDepsList = getDependenciesYaml(repoName, repoMap);
     if (depsList === undefined) {
       if (deployDepsList === undefined) {
         continue;
