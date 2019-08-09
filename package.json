@@ -4,8 +4,7 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "scripts": {
-    "deps": "./tools/bin/run-create-relationships",
-    "deploy": "lifeomic-manual-deploy -p $npm_package_name -t lifeomic-test --action apply --skip-terraform"
+    "deps": "./tools/bin/run-create-relationships"
   },
   "dependencies": {
     "@jupiterone/jupiterone-client-nodejs": "^0.13.2",
@@ -23,6 +22,7 @@
     "@types/node": "^12.7.0",
     "prettier": "1.18.2",
     "ts-node": "^8.3.0",
+    "tslint": "^5.18.0",
     "typescript": "^3.5.3"
   }
 }

@@ -1,11 +1,10 @@
 import { getClient } from "./getClient";
-const JupiterOneClient = require('@jupiterone/jupiterone-client-nodejs');
-const fs = require('fs');
+import { readdirSync } from 'fs';
 
 const repoMap = new Map();
 
-export async function getRepoIds(repoPath: string, clientInput: string[]) {
-  const repos = fs.readdirSync(repoPath);
+export async function getRepoIds(repoPath: string, clientInput: {account, username, password, accessToken}) {
+  const repos = readdirSync(repoPath);
   const j1Client = await getClient(clientInput);
 
   for (const repo of repos) {
@@ -13,12 +12,12 @@ export async function getRepoIds(repoPath: string, clientInput: string[]) {
       `Find CodeRepo with name='${repo}'`,
     );
     if (repoID.length === 0) {
-      let newRepoPath = repoPath.substring(repoPath.length) === '/' ? repoPath + repo : repoPath + '/' + repo;
-      let newRepos = fs.readdirSync(newRepoPath);
+      const newRepoPath = repoPath.substring(repoPath.length) === '/' ? repoPath + repo : repoPath + '/' + repo;
+      const newRepos = readdirSync(newRepoPath);
       let subdir = false;
       for (const nrepo of newRepos) {
-        const lol = await j1Client.queryV1(`Find CodeRepo with name='${nrepo}'`);
-        if (lol.length > 0) {
+        const newRepo = await j1Client.queryV1(`Find CodeRepo with name='${nrepo}'`);
+        if (newRepo.length > 0) {
           subdir = true;
           break;
         }
