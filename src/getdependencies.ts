@@ -1,7 +1,7 @@
 import { sync } from 'read-yaml';
 import { join, resolve } from 'path';
 
-const dependencies = [];
+let dependencies = [];
 
 export function getDependencies(repo: string, packageScope: string[], repoMap: Map<string,string>) {
   try {
