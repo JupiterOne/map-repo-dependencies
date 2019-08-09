@@ -7,8 +7,8 @@ import { createRepoRelationship, createDeployRelationship } from './createRepoRe
 require('dotenv').config();
 
 let success = 0, failure = 0, switchName;
-let missingDeps = [];
-let packageScope = [];
+const missingDeps = [];
+const packageScope = [];
 
 (async () => {
   while (true) {

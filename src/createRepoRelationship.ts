@@ -3,7 +3,7 @@ export async function createRepoRelationship(depsList, mainRepo, j1Client, repoN
   if (depsList.length > 0) {
     for (const dep of depsList) {
       const fullName = dep.substring(1, dep.indexOf(':'));
-      let depRepo = await j1Client.queryV1(
+      const depRepo = await j1Client.queryV1(
         `FIND CodeRepo WITH full_name='${fullName}'`
       );          
       
@@ -44,7 +44,7 @@ export async function createDeployRelationship(deployDepsList, mainRepo, j1Clien
   const successFail = {success: 0, failure: 0, missingDeps: []};
   if (deployDepsList.length > 0) {
     for (const dep of deployDepsList) {
-      let deployRepo = await j1Client.queryV1(
+      const deployRepo = await j1Client.queryV1(
         `FIND CodeRepo WITH name='${dep}'`
       );
       
