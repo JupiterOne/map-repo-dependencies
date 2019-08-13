@@ -11,7 +11,8 @@ This script will look for dependencies within a repository's `package.json` file
 - JupiterOne API credentials are required to run the necessary queries to create the relationships.
   - You must pass in your account and access token.
   - You will be prompted for both of these when you run the script.
-  - You have the option to create env variables to bypass manually entering them into the console.
+  - You have the option to create env variables to bypass manually enterng them into the console.
+    - Use `J1_ACCOUNT` for the account variable and `J1_API_TOKEN` for the access token variable.
 
 ## Running the script
 
