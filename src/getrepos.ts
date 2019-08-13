@@ -1,6 +1,5 @@
 import { getClient } from "./getClient";
 import { readdirSync } from 'fs';
-import { join, resolve } from 'path';
 
 const repoMap = new Map();
 
@@ -13,23 +12,21 @@ export async function getRepoIds(repoPath: string, clientInput: {account, access
       `Find CodeRepo with name='${repo}'`,
     );
     if (repoID.length === 0) {
-      const newRepoPath = resolve(repoPath, repo);
+      const newRepoPath = repoPath.substring(repoPath.length-1) === '/' ? repoPath + repo : repoPath + '/' + repo;
       const newRepos = readdirSync(newRepoPath);
       let subdir = false;
-      if (newRepos.includes('package.json')) {
-        console.log('Could not query Repo (' + repo + ').');
+      for (const nrepo of newRepos) {
+        const newRepo = await j1Client.queryV1(`Find CodeRepo with name='${nrepo}'`);
+        if (newRepo.length > 0) {
+          subdir = true;
+          break;
+        }
+      }
+      if (subdir) {
+        await getRepoIds(newRepoPath, clientInput);
       }
       else {
-        for (const nrepo of newRepos) {
-          const newRepo = await j1Client.queryV1(`Find CodeRepo with name='${nrepo}'`);
-          if (newRepo.length > 0) {
-            subdir = true;
-            break;
-          }
-        }
-        if (subdir) {
-          await getRepoIds(newRepoPath, clientInput);
-        }
+        console.log('Could not query Repo (' + repo + ').');
       }
     } else {
       repoMap.set(repo, repoPath);
