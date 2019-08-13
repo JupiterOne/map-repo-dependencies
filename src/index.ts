@@ -2,7 +2,7 @@ import { getDependencies, getDependenciesYaml } from './getDependencies';
 import { getRepoIds } from './getRepos';
 import { getClient } from './getClient';
 import { question } from 'readline-sync';
-import { createRepoRelationship, createDeployRelationship } from './createRepoRelationship';
+import { createRepoRelationships, createDeployRelationships } from './createRepoRelationship';
 
 require('dotenv').config();
 
@@ -27,11 +27,8 @@ let packageScope = [];
   }
   const pathToRepos = question('Input path to directory with repos (relative to root directory): ');
   const account = question('Input account. If using a .env file, continue without input: ');
-  const username = question('Input username. If using a .env file, continue without input: ');
-  const password = question('Input password. If using a .env file, continue without input: ');
   const access = question('Input access token. If using a .env file, continue without input: ');
-  const clientInput = {account: account, username: username, password: password, accessToken: access};
-
+  const clientInput = {account: account, accessToken: access};
 
   console.log('');
   const j1Client = await getClient(clientInput);
@@ -46,38 +43,20 @@ let packageScope = [];
     );
     const depsList = getDependencies(repoName, packageScope, repoMap);
     const deployDepsList = getDependenciesYaml(repoName, repoMap);
-    
-    switchName = '';
-    getSwitchExpression(depsList, deployDepsList);
 
-    switch (switchName) {
-      case 'No package.json or dependencies yaml': {
-        break;
-      }
-      case 'No dependencies.yaml': {
-        const relationship = await createRepoRelationship(depsList, mainRepo, j1Client, repoName, missingDeps);
-        missingDeps = relationship.missingDeps;
-        success += relationship.success;
-        failure += relationship.failure;
-        break;
-      }
-      case 'No package.json': {
-        const relationship = await createDeployRelationship(deployDepsList, mainRepo, j1Client, repoName, missingDeps);
-        missingDeps = relationship.missingDeps;
-        success += relationship.success;
-        failure += relationship.failure;
-        break;
-      }
-      default: {
-        const relationship = await createRepoRelationship(depsList, mainRepo, j1Client, repoName, missingDeps);
-        missingDeps = relationship.missingDeps;
-        const deployRelationship = await createDeployRelationship(deployDepsList, mainRepo, j1Client, repoName, missingDeps);
-        missingDeps = deployRelationship.missingDeps;
-        success += relationship.success + deployRelationship.success;
-        failure += relationship.failure + deployRelationship.failure;
-        break;
-      }
+    if (depsList !== undefined) {
+      const relationship = await createRepoRelationships(depsList, mainRepo, j1Client, repoName, missingDeps);
+      missingDeps = relationship.missingDeps;
+      success += relationship.success;
+      failure += relationship.failure;
     }
+    if (deployDepsList !== undefined) {
+      const relationship = await createDeployRelationships(deployDepsList, mainRepo, j1Client, repoName, missingDeps);
+      missingDeps = relationship.missingDeps;
+      success += relationship.success;
+      failure += relationship.failure;
+    }
+    
     console.log('');
   }
   console.log('Summary:');
@@ -91,16 +70,3 @@ let packageScope = [];
 })().catch(err => {
   console.error('', err);
 });
-
-
-function getSwitchExpression(depsList, deployDepsList) {
-  if (depsList === undefined && deployDepsList === undefined) {
-    switchName = 'No package.json or dependencies yaml';
-  } 
-  else if (deployDepsList === undefined && !(depsList === undefined)) {
-    switchName = 'No dependencies.yaml';
-  }
-  else if (depsList === undefined && !(deployDepsList === undefined)) {
-    switchName = 'No package.json';
-  }
-}

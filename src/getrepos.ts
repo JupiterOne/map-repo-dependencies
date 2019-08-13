@@ -3,7 +3,7 @@ import { readdirSync } from 'fs';
 
 const repoMap = new Map();
 
-export async function getRepoIds(repoPath: string, clientInput: {account, username, password, accessToken}) {
+export async function getRepoIds(repoPath: string, clientInput: {account, accessToken}) {
   const repos = readdirSync(repoPath);
   const j1Client = await getClient(clientInput);
 
@@ -12,7 +12,7 @@ export async function getRepoIds(repoPath: string, clientInput: {account, userna
       `Find CodeRepo with name='${repo}'`,
     );
     if (repoID.length === 0) {
-      const newRepoPath = repoPath.substring(repoPath.length) === '/' ? repoPath + repo : repoPath + '/' + repo;
+      const newRepoPath = repoPath.substring(repoPath.length-1) === '/' ? repoPath + repo : repoPath + '/' + repo;
       const newRepos = readdirSync(newRepoPath);
       let subdir = false;
       for (const nrepo of newRepos) {

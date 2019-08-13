@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "scripts": {
-    "deps": "./tools/bin/run-create-relationships"
+    "create-relationships": "./tools/bin/run-create-relationships"
   },
   "dependencies": {
     "@jupiterone/jupiterone-client-nodejs": "^0.13.2",

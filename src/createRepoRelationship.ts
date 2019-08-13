@@ -1,9 +1,9 @@
-export async function createRepoRelationship(depsList, mainRepo, j1Client, repoName, missingDeps: string[]) {
+export async function createRepoRelationships(depsList, mainRepo, j1Client, repoName, missingDeps: string[]) {
   const successFail = {success: 0, failure: 0, missingDeps: []};
   if (depsList.length > 0) {
     for (const dep of depsList) {
       const fullName = dep.substring(1, dep.indexOf(':'));
-      let depRepo = await j1Client.queryV1(
+      const depRepo = await j1Client.queryV1(
         `FIND CodeRepo WITH full_name='${fullName}'`
       );          
       
@@ -40,11 +40,11 @@ export async function createRepoRelationship(depsList, mainRepo, j1Client, repoN
   return successFail;
 }
 
-export async function createDeployRelationship(deployDepsList, mainRepo, j1Client, repoName, missingDeps) {
+export async function createDeployRelationships(deployDepsList, mainRepo, j1Client, repoName, missingDeps) {
   const successFail = {success: 0, failure: 0, missingDeps: []};
   if (deployDepsList.length > 0) {
     for (const dep of deployDepsList) {
-      let deployRepo = await j1Client.queryV1(
+      const deployRepo = await j1Client.queryV1(
         `FIND CodeRepo WITH name='${dep}'`
       );
       

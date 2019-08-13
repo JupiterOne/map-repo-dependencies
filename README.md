@@ -1,27 +1,21 @@
 # JupiterOne Repository Relationship Generator
 
-A script that generates graphql relationships between a repository and its dependencies.
+A script that generates JupiterOne entity relationships between a repository and its dependencies.
 This script will look for dependencies within a repository's `package.json` file as well as the `dependencies.yaml`file if the repository has a `deploy` directory.
 
-This script uses the JupiterOne graphql graph database.
-
 ## Before Running
-- Create a directory containing the repositories that you would like the script to be run on anywhere you would like in the project (Note: You will need the path to this directory while running the script).
+- Create a directory containing the repositories that you would like the script to be run on (Note: You will need the path to this directory while running the script).
 
 - Ensure that the `package.json` for each repository is at the root of the repository.
 
-- JupiterOne Client credentials are required to run the necessary queries to create the relationships.
-  - There are 4 parameters that need to be passed in:
-    - Account
-    - Username
-    - Password
-    - AccessToken
+- JupiterOne API credentials are required to run the necessary queries to create the relationships.
+  - You must pass in your account and access token.
   - You will be prompted for all four of these when you run the script.
   - You have the option to create env variables to bypass manually entering them into the console.
 
 ## Running the script
 
-- Use `yarn deps`
+- Use `yarn create-relationships`
 - If you wish to only run the script on a certain group of dependencies, you have the option of inputting any number of package scopes.
   - Example:
     - Dependencies list:
