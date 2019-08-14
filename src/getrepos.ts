@@ -20,10 +20,9 @@ export async function getRepoIds(repoPath: string, clientInput: {account, access
       continue;
     }
     const newRepoPath = resolve(repoPath, repo);
-    const newRepos = readdirSync(newRepoPath);
-    let subdir = false;
+    const newFolders = readdirSync(newRepoPath);
 
-    if (!(newRepos.includes('package.json')) && await containsSubdirectory(newRepos, j1Client, subdir)) {
+    if (!(newFolders.includes('package.json')) && await containsSubdirectory(newFolders, j1Client)) {
       await getRepoIds(newRepoPath, clientInput);
       continue;
     }
@@ -32,8 +31,9 @@ export async function getRepoIds(repoPath: string, clientInput: {account, access
   return repoMap;
 }
 
-async function containsSubdirectory(newRepos, j1Client, subdir) {
-  for (const nrepo of newRepos) {
+async function containsSubdirectory(newFolders, j1Client) {
+  let subdir = false;
+  for (const nrepo of newFolders) {
     const newRepo = await j1Client.queryV1(`Find CodeRepo with name='${nrepo}'`);
     if (newRepo.length > 0) {
       subdir = true;
