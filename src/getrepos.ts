@@ -1,5 +1,6 @@
 import { getClient } from "./getClient";
 import { readdirSync } from 'fs';
+import { resolve } from 'path';
 
 const repoMap = new Map();
 
@@ -8,29 +9,36 @@ export async function getRepoIds(repoPath: string, clientInput: {account, access
   const j1Client = await getClient(clientInput);
 
   for (const repo of repos) {
+    if (repo === '.DS_Store') {
+      continue;
+    }
     const repoID = await j1Client.queryV1(
       `Find CodeRepo with name='${repo}'`,
     );
-    if (repoID.length === 0) {
-      const newRepoPath = repoPath.substring(repoPath.length-1) === '/' ? repoPath + repo : repoPath + '/' + repo;
-      const newRepos = readdirSync(newRepoPath);
-      let subdir = false;
-      for (const nrepo of newRepos) {
-        const newRepo = await j1Client.queryV1(`Find CodeRepo with name='${nrepo}'`);
-        if (newRepo.length > 0) {
-          subdir = true;
-          break;
-        }
-      }
-      if (subdir) {
-        await getRepoIds(newRepoPath, clientInput);
-      }
-      else {
-        console.log('Could not query Repo (' + repo + ').');
-      }
-    } else {
+    if (repoID.length > 0) {
       repoMap.set(repo, repoPath);
+      continue;
     }
+    const newRepoPath = resolve(repoPath, repo);
+    const newFolders = readdirSync(newRepoPath);
+
+    if (!(newFolders.includes('package.json')) && await containsSubdirectory(newFolders, j1Client)) {
+      await getRepoIds(newRepoPath, clientInput);
+      continue;
+    }
+    console.log('Could not query Repo (' + repo + ').');
   }
   return repoMap;
+}
+
+async function containsSubdirectory(newFolders, j1Client) {
+  let subdir = false;
+  for (const nrepo of newFolders) {
+    const newRepo = await j1Client.queryV1(`Find CodeRepo with name='${nrepo}'`);
+    if (newRepo.length > 0) {
+      subdir = true;
+      break;
+    }
+  }
+  return subdir;
 }

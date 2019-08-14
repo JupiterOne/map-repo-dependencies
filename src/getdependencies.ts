@@ -1,5 +1,5 @@
 import { sync } from 'read-yaml';
-import { join, resolve } from 'path';
+import { resolve } from 'path';
 
 let dependencies = [];
 
