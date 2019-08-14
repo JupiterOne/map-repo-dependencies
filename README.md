@@ -38,24 +38,29 @@ This script will look for dependencies within a repository's `package.json` file
   Could not query Repo (app-store-admin-web).
   Could not query Repo (app-store-service).
   
-  Repo: analytics-api
-  Successfully created relationship (analytics-api USES @lifeomic/koa: ^6.10.0).
-  Successfully created relationship (analytics-api USES @lifeomic/lambda-runtime-tools: ^1.3.1).
-  Successfully created relationship (analytics-api USES @lifeomic/logging: ^1.0.2).
-  Successfully created relationship (analytics-api USES @lifeomic/project-client: ^2.0.0).
-  Successfully created relationship (analytics-api DEPENDS_ON lambda-cloudwatch-slack).
-  Successfully created relationship (analytics-api DEPENDS_ON provision-environment).
-  Successfully created relationship (analytics-api DEPENDS_ON provision-api-gateway).
-  Successfully created relationship (analytics-api DEPENDS_ON provision-pager-duty).
-  Successfully created relationship (analytics-api DEPENDS_ON sumo-cloudwatch-logs).
-  Failed to create relationship with variant-ml (was not found on the graph). Skipped.
-  Successfully created relationship (analytics-api DEPENDS_ON track-usage).
-  Successfully created relationship (analytics-api DEPENDS_ON analytics-listener).
-
+  Repo: scheduler
+  Successfully created relationship (scheduler USES @lifeomic/alpha: ^0.14.0).
+  Failed to create relationship with @lifeomic/attempt: ^3.0.0 (was not found on the graph). Skipped.
+  Successfully created relationship (scheduler USES @lifeomic/koa: ^7.1.1).
+  Successfully created relationship (scheduler USES @lifeomic/lambda-runtime-tools: ^3.4.1).
+  Successfully created relationship (scheduler USES @lifeomic/logging: ^1.0.5).
+  Successfully created relationship (scheduler USES lambda-cloudwatch-slack, deploy).
+  Successfully created relationship (scheduler USES provision-environment, deploy).
+  Successfully created relationship (scheduler USES provision-pager-duty, deploy).
+  Successfully created relationship (scheduler USES sumo-cloudwatch-logs, deploy).
+  
+  Repo: koa
+  *** Repo does not have a deploy directory with a dependencies.yaml ***
+  Successfully created relationship (koa USES @lifeomic/abac: ^2.0.3).
+  Successfully created relationship (koa USES @lifeomic/alpha: ^0.12.1).
+  Successfully created relationship (koa USES @lifeomic/fhir-schemas: ^2.1.1).
+  Successfully created relationship (koa USES @lifeomic/platform-headers: ^1.3.0).
+  Successfully created relationship (koa USES @lifeomic/usage-stream: ^6.0.0).
+  
   Summary:
-  Created Relationships: 11
+  Created Relationships: 13
   Failed Attempts: 1
   Failed dependencies:
-    variant-ml (analytics-api, deploy).
+    @lifeomic/attempt: ^3.0.0 (scheduler).
   ```
 
