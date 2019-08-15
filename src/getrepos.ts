@@ -1,5 +1,5 @@
 import { getClient } from "./getClient";
-import { readdirSync } from 'fs';
+import { readdirSync, lstatSync } from 'fs';
 import { resolve } from 'path';
 
 const repoMap = new Map();
@@ -9,7 +9,7 @@ export async function getRepoIds(repoPath: string, clientInput: {account, access
   const j1Client = await getClient(clientInput);
 
   for (const repo of repos) {
-    if (repo === '.DS_Store') {
+    if (repo.startsWith('.') || !lstatSync(repo).isDirectory()) {
       continue;
     }
     const repoID = await j1Client.queryV1(
@@ -20,13 +20,18 @@ export async function getRepoIds(repoPath: string, clientInput: {account, access
       continue;
     }
     const newRepoPath = resolve(repoPath, repo);
-    const newFolders = readdirSync(newRepoPath);
 
-    if (!(newFolders.includes('package.json')) && await containsSubdirectory(newFolders, j1Client)) {
-      await getRepoIds(newRepoPath, clientInput);
-      continue;
+    if (lstatSync(newRepoPath).isDirectory())
+    {
+      const newFolders = readdirSync(newRepoPath);
+
+      if (!(newFolders.includes('package.json')) && await containsSubdirectory(newFolders, j1Client)) {
+        await getRepoIds(newRepoPath, clientInput);
+        continue;
+      }
+
+      console.log('Could not query Repo (' + repo + ').');
     }
-    console.log('Could not query Repo (' + repo + ').');
   }
   return repoMap;
 }
