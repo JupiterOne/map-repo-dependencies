@@ -9,7 +9,7 @@ export async function getRepoIds(repoPath: string, clientInput: {account, access
   const j1Client = await getClient(clientInput);
 
   for (const repo of repos) {
-    if (repo.startsWith('.')) {
+    if (repo.startsWith('.') || !lstatSync(repo).isDirectory()) {
       continue;
     }
     const repoID = await j1Client.queryV1(
@@ -29,7 +29,7 @@ export async function getRepoIds(repoPath: string, clientInput: {account, access
         await getRepoIds(newRepoPath, clientInput);
         continue;
       }
-      
+
       console.log('Could not query Repo (' + repo + ').');
     }
   }
