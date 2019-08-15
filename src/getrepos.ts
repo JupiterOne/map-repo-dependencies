@@ -9,7 +9,7 @@ export async function getRepoIds(repoPath: string, clientInput: {account, access
   const j1Client = await getClient(clientInput);
 
   for (const repo of repos) {
-    if (repo === '.DS_Store') {
+    if (repo.startsWith('.')) {
       continue;
     }
     const repoID = await j1Client.queryV1(
