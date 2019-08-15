@@ -9,7 +9,8 @@ export async function getRepoIds(repoPath: string, clientInput: {account, access
   const j1Client = await getClient(clientInput);
 
   for (const repo of repos) {
-    if (repo.startsWith('.') || !lstatSync(repo).isDirectory()) {
+    const newRepoPath = resolve(repoPath, repo);
+    if (repo.startsWith('.') || !lstatSync(newRepoPath).isDirectory()) {
       continue;
     }
     const repoID = await j1Client.queryV1(
@@ -19,19 +20,15 @@ export async function getRepoIds(repoPath: string, clientInput: {account, access
       repoMap.set(repo, repoPath);
       continue;
     }
-    const newRepoPath = resolve(repoPath, repo);
 
-    if (lstatSync(newRepoPath).isDirectory())
-    {
-      const newFolders = readdirSync(newRepoPath);
+    const newFolders = readdirSync(newRepoPath);
 
-      if (!(newFolders.includes('package.json')) && await containsSubdirectory(newFolders, j1Client)) {
-        await getRepoIds(newRepoPath, clientInput);
-        continue;
-      }
-
-      console.log('Could not query Repo (' + repo + ').');
+    if (!(newFolders.includes('package.json')) && await containsSubdirectory(newFolders, j1Client)) {
+      await getRepoIds(newRepoPath, clientInput);
+      continue;
     }
+
+    console.log('Could not query Repo (' + repo + ').');
   }
   return repoMap;
 }
