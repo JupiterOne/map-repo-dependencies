@@ -26,9 +26,9 @@ This script will look for dependencies within a repository's `package.json` file
       - `graphlql`
       - `dotenv`
     ```
-    Input a package scope, i.e. @package (input QUIT when finished): @lifeomic
-    Input a package scope, i.e. @package (input QUIT when finished): @jupiterone
-    Input a package scope, i.e. @package (input QUIT when finished): QUIT
+    Input a package scope, i.e. @package (input DONE when finished): @lifeomic
+    Input a package scope, i.e. @package (input DONE when finished): @jupiterone
+    Input a package scope, i.e. @package (input DONE when finished): DONE
     ```
     This set of inputs will create relationships for the first three items on the dependencies list above.
 
