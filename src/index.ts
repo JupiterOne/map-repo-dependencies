@@ -1,21 +1,19 @@
-import { getDependencies, getDependenciesYaml } from './get-dependencies';
+import { getDependencies, getDeployDependencies } from './get-dependencies';
 import { getRepoIds } from './get-repos';
 import { getClient } from './get-client';
 import { question } from 'readline-sync';
-import {
-  createRepoRelationships, createDeployRelationships
-} from './create-repo-relationship';
+import { createRepoRelationships } from './create-repo-relationship';
 
 require('dotenv').config();
 
-let success = 0, failure = 0, switchName;
+let success = 0, failure = 0;
 let missingDeps = [];
 let packageScope = [];
 
 (async () => {
   while (true) {
     const scope = question(
-      'Input a package scope, e.g. @jupiterone (input ALL for everything, DONE when finished, HELP for other options): '
+      '\nInput a package scope, e.g. @jupiterone (input ALL for everything, DONE when finished, HELP for other options):\n'
     );
     if (scope === 'DONE') {
       break;
@@ -25,17 +23,15 @@ let packageScope = [];
       break;
     }
     if (scope === 'HELP') {
-      console.log('');
       console.log('1. ALL = All dependencies');
       console.log('2. (No Input) = All dependencies not starting with \'@\'');
-      console.log('');
       continue;
     }
     packageScope.push(scope);
   }
-  const pathToRepos = question('Input path to directory with repos (relative to root directory): ');
-  const account = question('Input your JupiterOne account id. If using a .env file, continue without input: ');
-  const access = question('Input your JupiterOne access token. If using a .env file, continue without input: ');
+  const pathToRepos = question('\nInput path to directory with repos (relative to root directory):\n');
+  const account = question('\nInput your JupiterOne account id. If using a .env file, continue without input:\n');
+  const access = question('\nInput your JupiterOne access token. If using a .env file, continue without input:\n');
   const clientInput = {account: account, accessToken: access};
 
   console.log('');
@@ -50,19 +46,17 @@ let packageScope = [];
       `FIND CodeRepo WITH name='${repoName}'`
     );
     const depsList = getDependencies(repoName, packageScope, repoMap);
-    const deployDepsList = getDependenciesYaml(repoName, repoMap);
+    const deployDepsList = getDeployDependencies(repoName, repoMap);
 
-    if (depsList !== undefined) {
-      const relationship = await createRepoRelationships(depsList, mainRepo, j1Client, repoName, missingDeps);
-      missingDeps = relationship.missingDeps;
-      success += relationship.success;
-      failure += relationship.failure;
+    if (depsList) {
+      const results = await createRepoRelationships(depsList, mainRepo, j1Client, repoName, missingDeps);
+      success += results.success;
+      failure += results.failure;
     }
-    if (deployDepsList !== undefined) {
-      const relationship = await createDeployRelationships(deployDepsList, mainRepo, j1Client, repoName, missingDeps);
-      missingDeps = relationship.missingDeps;
-      success += relationship.success;
-      failure += relationship.failure;
+    if (deployDepsList) {
+      const results = await createRepoRelationships(deployDepsList, mainRepo, j1Client, repoName, missingDeps, true);
+      success += results.success;
+      failure += results.failure;
     }
     
     console.log('');
@@ -70,11 +64,10 @@ let packageScope = [];
   console.log('Summary:');
   console.log('Created Relationships: ' + success);
   console.log('Failed Attempts: ' + failure);
-  console.log('Failed dependencies:');
-  missingDeps.forEach(element => {
-    console.log('    ' + element);
-  });
-  console.log('');
+  if (missingDeps.length > 0) {
+    console.log('Unable to create relationship to the following dependencies:');
+    console.log('  - ' + missingDeps.join('\n  - '));
+  }
 })().catch(err => {
   console.error('', err);
 });
