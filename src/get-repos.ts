@@ -12,22 +12,29 @@ export async function getRepoIds(repoPath: string, clientInput: {account, access
     if (repo.startsWith('.') || !lstatSync(newRepoPath).isDirectory()) {
       continue;
     }
-    const repoID = await j1Client.queryV1(
-      `Find CodeRepo with name='${repo}'`,
-    );
-    if (repoID.length > 0) {
-      repoMap.set(repo, repoPath);
-      continue;
-    }
 
     const newFolders = readdirSync(newRepoPath);
 
-    if (!(newFolders.includes('package.json')) && await containsSubdirectory(newFolders, j1Client)) {
-      await getRepoIds(newRepoPath, clientInput);
-      continue;
+    if (newFolders.includes('package.json')) {
+      const repoID = await j1Client.queryV1(
+        `Find CodeRepo with name='${repo}'`,
+      );
+      if (repoID.length > 0) {
+        repoMap.set(repo, repoPath);
+      }
+      else {
+        console.log('[SKIP] Could not query Repo (' + repo + ').');
+      }
     }
-
-    console.log('Could not query Repo (' + repo + ').');
+    else if (await containsSubdirectory(newFolders, j1Client)) {
+      const subMap = await getRepoIds(newRepoPath, clientInput);
+      subMap.forEach((value, key) => {
+        repoMap.set(key, value);
+      })
+    }
+    else {
+      console.log('[SKIP] Could not process (' + repo + ').');
+    }
   }
   return repoMap;
 }
