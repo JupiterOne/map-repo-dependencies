@@ -5,8 +5,9 @@ its dependencies. This script will look for dependencies within a repository's
 `package.json` file as well as the `dependencies.yaml` file if the repository has
 a `deploy` directory.
 
-This script currently works with node.js dependencies in package.json only. It
-does not scan for devDependencies.
+This script currently works with node.js dependencies in package.json only.
+Additionally, this script only creates relationships for `dependencies` (not
+`devDependencies`).
 
 ## Before Running
 
