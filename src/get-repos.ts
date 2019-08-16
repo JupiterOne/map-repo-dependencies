@@ -1,4 +1,4 @@
-import { getClient } from "./getClient";
+import { getClient } from "./get-client";
 import { readdirSync, lstatSync } from 'fs';
 import { resolve } from 'path';
 
