@@ -33,7 +33,7 @@ export function getDependencies(repo: string, packageScope: string[], repoMap: M
   }
 }
 
-export function getDependenciesYaml(repo: string, repoMap: Map<string,string>) {
+export function getDeployDependencies(repo: string, repoMap: Map<string,string>) {
   try {
     const path = resolve(repoMap.get(repo) + '/' + repo + '/deploy/dependencies.yaml');
     dependencies = [];
