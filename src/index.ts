@@ -20,6 +20,10 @@ let packageScope = [];
     if (scope === 'DONE') {
       break;
     }
+    if (scope === 'ALL') {
+      packageScope.push(scope);
+      break;
+    }
     if (scope === 'HELP') {
       console.log('');
       console.log('1. ALL = All dependencies');
