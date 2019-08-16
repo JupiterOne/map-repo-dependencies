@@ -31,7 +31,7 @@ export async function createRepoRelationships(
       if (scope && repo) {
         fullName = scopeNameTransformations.has(scope)
           ? scopeNameTransformations.get(scope) + repo
-          : scope.substr(1) + repo
+          : scope.substring(1) + repo
       } 
       else if (repo) {
         fullName = repo;
