@@ -34,8 +34,8 @@ let packageScope = [];
     packageScope.push(scope);
   }
   const pathToRepos = question('Input path to directory with repos (relative to root directory): ');
-  const account = question('Input account. If using a .env file, continue without input: ');
-  const access = question('Input access token. If using a .env file, continue without input: ');
+  const account = question('Input your JupiterOne account id. If using a .env file, continue without input: ');
+  const access = question('Input your JupiterOne access token. If using a .env file, continue without input: ');
   const clientInput = {account: account, accessToken: access};
 
   console.log('');
