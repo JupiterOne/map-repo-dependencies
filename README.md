@@ -2,7 +2,7 @@
 
 A script that generates JupiterOne entity relationships between a repository and
 its dependencies. This script will look for dependencies within a repository's
-`package.json` file as well as the `dependencies.yaml`file if the repository has
+`package.json` file as well as the `dependencies.yaml` file if the repository has
 a `deploy` directory.
 
 This script currently works with node.js dependencies in package.json only. It
