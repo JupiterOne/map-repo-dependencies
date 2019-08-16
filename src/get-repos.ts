@@ -2,6 +2,13 @@ import { getClient } from "./get-client";
 import { readdirSync, lstatSync } from 'fs';
 import { resolve } from 'path';
 
+const excludes = [
+  'node_modules',
+  'bin',
+  'src',
+  'test'
+]
+
 export async function getRepoIds(repoPath: string, clientInput: {account, accessToken}) {
   const repoMap = new Map();
   const repos = readdirSync(repoPath);
@@ -9,7 +16,7 @@ export async function getRepoIds(repoPath: string, clientInput: {account, access
 
   for (const repo of repos) {
     const newRepoPath = resolve(repoPath, repo);
-    if (repo.startsWith('.') || !lstatSync(newRepoPath).isDirectory()) {
+    if (repo.startsWith('.') || excludes.includes(repo) || !lstatSync(newRepoPath).isDirectory()) {
       continue;
     }
 
