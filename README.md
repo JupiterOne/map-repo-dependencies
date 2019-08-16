@@ -11,7 +11,7 @@ does not scan for devDependencies.
 ## Before Running
 
 - Create a directory containing the repositories that you would like the script
-  to be run on (Note: You will need the path to this directory while running the
+  to be run against (Note: You will need the path to this directory while running the
   script).
 
 - Ensure that the `package.json` for each repository is at the root of the
