@@ -1,8 +1,10 @@
-import { getDependencies, getDependenciesYaml } from './getDependencies';
-import { getRepoIds } from './getRepos';
-import { getClient } from './getClient';
+import { getDependencies, getDependenciesYaml } from './get-dependencies';
+import { getRepoIds } from './get-repos';
+import { getClient } from './get-client';
 import { question } from 'readline-sync';
-import { createRepoRelationships, createDeployRelationships } from './createRepoRelationship';
+import {
+  createRepoRelationships, createDeployRelationships
+} from './create-repo-relationship';
 
 require('dotenv').config();
 

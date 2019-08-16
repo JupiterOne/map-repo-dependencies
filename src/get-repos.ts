@@ -2,9 +2,8 @@ import { getClient } from "./getClient";
 import { readdirSync, lstatSync } from 'fs';
 import { resolve } from 'path';
 
-const repoMap = new Map();
-
 export async function getRepoIds(repoPath: string, clientInput: {account, accessToken}) {
+  const repoMap = new Map();
   const repos = readdirSync(repoPath);
   const j1Client = await getClient(clientInput);
 
