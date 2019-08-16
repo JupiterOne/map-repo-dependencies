@@ -14,7 +14,9 @@ let packageScope = [];
 
 (async () => {
   while (true) {
-    const scope = question('Input a package scope, i.e. @package (input DONE when finished, HELP for other options): ');
+    const scope = question(
+      'Input a package scope, e.g. @jupiterone (input ALL for everything, DONE when finished, HELP for other options): '
+    );
     if (scope === 'DONE') {
       break;
     }
