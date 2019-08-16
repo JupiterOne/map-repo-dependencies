@@ -1,8 +1,10 @@
-import { getDependencies, getDependenciesYaml } from './getDependencies';
-import { getRepoIds } from './getRepos';
-import { getClient } from './getClient';
+import { getDependencies, getDependenciesYaml } from './get-dependencies';
+import { getRepoIds } from './get-repos';
+import { getClient } from './get-client';
 import { question } from 'readline-sync';
-import { createRepoRelationships, createDeployRelationships } from './createRepoRelationship';
+import {
+  createRepoRelationships, createDeployRelationships
+} from './create-repo-relationship';
 
 require('dotenv').config();
 
@@ -12,8 +14,14 @@ let packageScope = [];
 
 (async () => {
   while (true) {
-    const scope = question('Input a package scope, i.e. @package (input DONE when finished, HELP for other options): ');
+    const scope = question(
+      'Input a package scope, e.g. @jupiterone (input ALL for everything, DONE when finished, HELP for other options): '
+    );
     if (scope === 'DONE') {
+      break;
+    }
+    if (scope === 'ALL') {
+      packageScope.push(scope);
       break;
     }
     if (scope === 'HELP') {
@@ -26,8 +34,8 @@ let packageScope = [];
     packageScope.push(scope);
   }
   const pathToRepos = question('Input path to directory with repos (relative to root directory): ');
-  const account = question('Input account. If using a .env file, continue without input: ');
-  const access = question('Input access token. If using a .env file, continue without input: ');
+  const account = question('Input your JupiterOne account id. If using a .env file, continue without input: ');
+  const access = question('Input your JupiterOne access token. If using a .env file, continue without input: ');
   const clientInput = {account: account, accessToken: access};
 
   console.log('');
