@@ -87,3 +87,43 @@ Additionally, this script only creates relationships for `dependencies` (not
   Failed dependencies:
     @lifeomic/attempt: ^3.0.0 (scheduler).
   ```
+
+## Querying the visualizing the graph in JupiterOne
+
+You can then run queries in JupiterOne to generate reports and visualizations
+of your repo dependencies. For example:
+
+**Which internal repo is mostly used by other repos?**
+
+```j1ql
+Find CodeRepo as repo
+  that uses CodeRepo as dependency
+return
+  dependency.name, count(repo) as dependents
+order by dependents desc
+```
+
+**Show a visual dependency graph of a particular repo:**
+
+```j1ql
+'jupiter-client-nodejs' that uses CodeRepo return tree
+```
+
+> Replace `jupiter-integration-okta` in the above query with the desired repo
+> name.
+
+![](graph.png)
+
+## Current limitations
+
+- This script only parses repos pulled down locally and does not handle remote
+  repos.
+
+- This script is limited to analyzing the `package.json` file for `node.js`
+  projects.
+
+- This script only creates relationships for `dependencies` (not
+  `devDependencies`).
+
+- This script does not currently handle deletion of repo dependency
+  relationships if the dependency is removed from the `package.json` file.
