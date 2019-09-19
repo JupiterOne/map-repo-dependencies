@@ -26,6 +26,7 @@ export async function createRepoRelationships(
 
       const scope = match[1];
       const repo = match[2];
+      const version = match[3];
 
       let fullName;
       if (scope && repo) {
@@ -53,6 +54,7 @@ export async function createRepoRelationships(
           'USES',
           mainRepo[0].entity._id,
           depRepo[0].entity._id,
+          { version }
         );
         console.log(
           `Successfully created relationship (${repoName} USES ${dep}${

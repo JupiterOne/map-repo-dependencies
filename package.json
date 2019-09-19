@@ -7,7 +7,7 @@
     "start": "./tools/bin/run-create-relationships"
   },
   "dependencies": {
-    "@jupiterone/jupiterone-client-nodejs": "^0.13.2",
+    "@jupiterone/jupiterone-client-nodejs": "^0.16.1",
     "commander": "^2.20.0",
     "dotenv": "^8.0.0",
     "esm": "^3.2.25",
