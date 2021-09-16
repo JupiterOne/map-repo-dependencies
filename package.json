@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@jupiterone/jupiterone-client-nodejs": "^0.23.0",
+    "@lifeomic/attempt": "^3.0.0",
     "commander": "^2.20.0",
     "dotenv": "^8.0.0",
     "esm": "^3.2.25",
