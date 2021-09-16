@@ -4,3 +4,4 @@ repos
 .env
 
 results.json
+bulkDelete.json
