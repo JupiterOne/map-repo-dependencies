@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "./tools/bin/run-create-relationships"
+    "start": "./tools/bin/run-create-relationships",
+    "delete": "./tools/bin/delete-pseudo-relationships"
   },
   "dependencies": {
     "@jupiterone/jupiterone-client-nodejs": "^0.23.0",
