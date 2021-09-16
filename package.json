@@ -8,7 +8,7 @@
     "delete": "./tools/bin/delete-pseudo-relationships"
   },
   "dependencies": {
-    "@jupiterone/jupiterone-client-nodejs": "^0.23.0",
+    "@jupiterone/jupiterone-client-nodejs": "^0.23.4",
     "@lifeomic/attempt": "^3.0.0",
     "commander": "^2.20.0",
     "dotenv": "^8.0.0",
