@@ -10,11 +10,13 @@
   "dependencies": {
     "@jupiterone/jupiterone-client-nodejs": "^0.23.4",
     "@lifeomic/attempt": "^3.0.0",
+    "@types/lodash.uniqby": "^4.7.6",
     "commander": "^2.20.0",
     "dotenv": "^8.0.0",
     "esm": "^3.2.25",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
+    "lodash.uniqby": "^4.7.0",
     "read-yaml": "^1.1.0",
     "readline-sync": "^1.4.10"
   },
